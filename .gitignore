@@ -1,0 +1,13 @@
+### local ###
+
+.idea
+.bashrc
+.deploy/local/.env
+
+.DS_Store
+Thumbs.db
+
+### aplicação ###
+
+vendor
+.env.local
