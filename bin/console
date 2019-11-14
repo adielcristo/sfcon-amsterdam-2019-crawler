@@ -3,9 +3,14 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use App\Command\GetSymfonyReleasesCommand;
+use App\Command\GetSymfonyVersionsCommand;
 use Symfony\Component\Console\Application;
 
 $application = new Application();
+
+$application->add(new GetSymfonyReleasesCommand());
+$application->add(new GetSymfonyVersionsCommand());
 
 try {
     $application->run();
