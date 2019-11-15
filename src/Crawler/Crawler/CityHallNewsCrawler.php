@@ -2,6 +2,7 @@
 
 namespace App\Crawler\Crawler;
 
+use App\Crawler\Page\NewsArticlePage;
 use App\Crawler\Page\NewsArticleSearchPage;
 use RuntimeException;
 use Symfony\Component\DomCrawler\Crawler;
@@ -44,6 +45,29 @@ class CityHallNewsCrawler
             return new NewsArticleSearchPage($crawler);
         }
 
-        throw new RuntimeException('Could not retrieve the news.');
+        throw new RuntimeException('Could not retrieve the news articles.');
+    }
+
+    /**
+     * @param string $url
+     * @return NewsArticlePage
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function getNewsArticle(string $url) : NewsArticlePage
+    {
+        $response = $this->httpClient->request('GET', $url);
+
+        if (Response::HTTP_OK === $response->getStatusCode()) {
+            $content = $response->getContent();
+            $crawler = new Crawler($content);
+
+            // Create an object to handle the target DOM elements
+            return new NewsArticlePage($crawler);
+        }
+
+        throw new RuntimeException('Could not retrieve the news article.');
     }
 }
