@@ -4,6 +4,7 @@ namespace App\Crawler\Crawler;
 
 use RuntimeException;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -35,7 +36,7 @@ class SymfonyCrawler
     {
         $response = $this->httpClient->request('GET', 'https://symfony.com/versions.json');
 
-        if (200 === $response->getStatusCode()) {
+        if (Response::HTTP_OK === $response->getStatusCode()) {
             return $response->toArray();
         }
 

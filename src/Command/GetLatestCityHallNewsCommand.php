@@ -2,26 +2,24 @@
 
 namespace App\Command;
 
-use App\Crawler\Crawler\SymfonyCrawler;
+use App\Crawler\Crawler\CityHallNewsCrawler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class GetSymfonyVersionsCommand extends Command
+class GetLatestCityHallNewsCommand extends Command
 {
-    protected static $defaultName = 'app:symfony:versions';
-
+    protected static $defaultName = 'app:news:latest';
     /**
-     * @var SymfonyCrawler
+     * @var CityHallNewsCrawler
      */
     private $crawler;
 
-    public function __construct(SymfonyCrawler $crawler)
+    public function __construct(CityHallNewsCrawler $crawler)
     {
         $this->crawler = $crawler;
 
@@ -31,33 +29,28 @@ class GetSymfonyVersionsCommand extends Command
     protected function configure() : void
     {
         $this
-            ->setDescription('Get information about the Symfony versions.')
-            ->setHelp('This command allows you to get information about the Symfony versions.');
+            ->setDescription('Get the latest news from the São Paulo City Hall.')
+            ->setHelp('This command allows you to get the latest news from the São Paulo City Hall.');
     }
 
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
      * @throws ClientExceptionInterface
-     * @throws DecodingExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output) : void
     {
-        $versions = $this->crawler->getVersions();
+        $searchPageUrl = 'http://www.capital.sp.gov.br/@@busca_atualizada?pt_toggle=%23&b_start:int=0&portal_type:list=News%20Item';
+        $searchPage = $this->crawler->getNewsArticleSearchPage($searchPageUrl);
 
-        if (!empty($versions)) {
-            $output->writeln('========== Symfony Versions ==========');
+        if ($searchPage->getNewsArticlesTotal() > 0) {
+            $output->writeln('========== Latest News - São Paulo City Hall ==========');
 
-            foreach ($versions as $key => $version) {
-                // Skipping some keys because there are a lot of versions
-                if ($key === 'non_installable' || $key === 'installable') {
-                    continue;
-                }
-
-                $output->writeln(sprintf('%s: %s', $key, $version));
+            foreach ($searchPage->getNewsArticleLinks() as $link) {
+                $output->writeln($link->getUri());
             }
         }
     }
