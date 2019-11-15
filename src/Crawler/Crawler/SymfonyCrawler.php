@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App\Crawler;
+namespace App\Crawler\Crawler;
 
 use RuntimeException;
 use Symfony\Component\HttpClient\HttpClient;
