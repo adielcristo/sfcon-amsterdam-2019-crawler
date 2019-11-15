@@ -9,9 +9,20 @@ use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class SymfonyCrawler
 {
+    /**
+     * @var HttpClientInterface
+     */
+    private $httpClient;
+
+    public function __construct(HttpClientInterface $httpClient)
+    {
+        $this->httpClient = $httpClient;
+    }
+
     /**
      * @return array
      * @throws TransportExceptionInterface
@@ -22,8 +33,7 @@ class SymfonyCrawler
      */
     public function getVersions() : array
     {
-        $httpClient = HttpClient::create();
-        $response = $httpClient->request('GET', 'https://symfony.com/versions.json');
+        $response = $this->httpClient->request('GET', 'https://symfony.com/versions.json');
 
         if (200 === $response->getStatusCode()) {
             return $response->toArray();

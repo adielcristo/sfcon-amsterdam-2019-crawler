@@ -16,6 +16,18 @@ class GetSymfonyReleasesCommand extends Command
 {
     protected static $defaultName = 'app:symfony:releases';
 
+    /**
+     * @var SymfonyCrawler
+     */
+    private $crawler;
+
+    public function __construct(SymfonyCrawler $crawler)
+    {
+        $this->crawler = $crawler;
+
+        parent::__construct();
+    }
+
     protected function configure() : void
     {
         $this
@@ -34,8 +46,7 @@ class GetSymfonyReleasesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output) : void
     {
-        $crawler = new SymfonyCrawler();
-        $releases = $crawler->getReleases();
+        $releases = $this->crawler->getReleases();
 
         if (!empty($releases)) {
             $output->writeln('========== Symfony Releases ==========');
