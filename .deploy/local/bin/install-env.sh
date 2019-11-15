@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-# Não sair se ocorrer um erro
+# Do not exit on error
 set +e
 set -o pipefail
 
-# Checa os requisitos e instala o ambiente
+# Check requirements and install environment
 
 if [[ -z ${COMPOSE_PROJECT_DIR} ]]; then
-    echo "Variável COMPOSE_PROJECT_DIR não configurada."
+    echo "Variable COMPOSE_PROJECT_DIR unset."
     return 1
 fi
 

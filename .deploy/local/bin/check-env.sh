@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
 
-# Checa os arquivos .env
+# Check .env files
 
 if [[ -f "${COMPOSE_PROJECT_DIR}/.env" ]]; then
     . "${COMPOSE_PROJECT_DIR}/.env"
 else
-    echo "Arquivo .env não encontrado na pasta do Docker."
-    echo "Erros foram encontrados. Abortando..."
+    echo ".env file not found on docker folder."
+    echo "Errors were found. Aborting..."
     return 1
 fi
 
 if [[ -f "${COMPOSE_PROJECT_DIR}/../../.env.local" ]]; then
     . "${COMPOSE_PROJECT_DIR}/../../.env.local"
 else
-    echo "Arquivo .env.local não encontrado na pasta do projeto."
-    echo "Erros foram encontrados. Abortando..."
+    echo ".env.local file not found on project folder."
+    echo "Errors were found. Aborting..."
     return 1
 fi
 
-# Checa as variáveis de ambiente
+# Check env vars
 
 declare -a env_vars=(
     # docker
@@ -39,7 +39,7 @@ declare -a env_vars=(
     "COMPOSER_MEMORY_LIMIT"
     "DEV_COMPOSER_DIR"
 
-    # aplicação
+    # application
     "APP_BASE_URL"
 )
 
@@ -47,12 +47,12 @@ env_checks=true
 
 for i in "${env_vars[@]}"; do
     if [[ -z ${!i} ]]; then
-        echo "Variável ${i} não configurada."
+        echo "Variable ${i} unset."
         env_checks=false
     fi
 done
 
 if [[ "$env_checks" = false ]]; then
-    echo "Erros foram encontrados. Abortando..."
+    echo "Errors were found. Aborting..."
     return 1
 fi

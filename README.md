@@ -1,16 +1,16 @@
-# SymfonyCon Webinar - Crawleando a Web com os Novos Componentes do Symfony
+# SymfonyCon Amsterdam 2019 - Crawling the Web with the New Symfony Components
 
-## Documentação
+## Documentation
 
-[Documentação do Symfony][doc-symfony]
+[Symfony Documentation][doc-symfony]
 
-## Requisitos
+## Requirements
 
 - MySQL 8.0
 - PHP 7.3
 - Symfony 4.3
 
-## Desenvolvimento
+## Development
 
 * [Local][doc-local]
 

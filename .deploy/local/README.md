@@ -1,38 +1,38 @@
-# Desenvolvimento
+# Development
 
-## Requisitos
+## Requirements
 
-1. Instale o [Docker][docker-install] e o [Docker Compose][compose-install], e
-   adicione os binários à variável de ambiente `PATH`.
+1. Install [Docker][docker-install] and [Docker Compose][compose-install],
+   and add the binaries to the `PATH` environment variable.
    
-   **_Nota: As configurações a seguir são baseadas no Linux. Ajustes podem ser
-   necessários para o uso do Docker Compose no ambiente Windows._** 
+   _Note: The following configurations are based on a Linux setup. Adjustments
+   may be required to use Docker Compose in the Windows setup._
 
-## Instalação
+## Installation
 
-### Variáveis de Ambiente
+### Environment Variables
 
-1. Acesse o diretório `.deploy/local`, crie um arquivo `.env` a partir do
-   arquivo `.env.dist`, e crie as variáveis usadas nos contêineres:
+1. Access the `.deploy/local` directory, create an `.env` file from `.env.dist`,
+   and set up the variables used on the containers:
 
-    | Variável              | Descrição                                                                               |
-    | --------------------- | --------------------------------------------------------------------------------------- |
-    | COMPOSE_FILE          | O(s) arquivo(s) de configuração do docker-compose.                                      |
-    | COMPOSE_PROJECT_DIR   | O diretório docker-compose do projeto para configuração local.                          |
-    | COMPOSE_PROJECT_NAME  | Nome do projeto usado como prefixo ao criar os contêineres.                             |
-    | COMPOSER_MEMORY_LIMIT | Configuração para evitar [erros de limite de memória][memory-limit-errors] do Composer. |
-    | DEV_COMPOSER_DIR      | O diretório do Composer na máquina host, usado para cache dos pacotes baixados.         |
-    | DEV_DOCKER_IMAGE_PHP  | Imagem Docker usada pelo serviço php.                                                   |
-    | DEV_HOST_PORT_HTTP    | Porta HTTP usada na máquina host. Padrão: 80.                                           |
-    | DEV_HOST_PORT_MYSQL   | Porta MySQL usada pela máquina host. Padrão: 3306.                                      |
-    | DEV_GID               | O ID do grupo do usuário na máquina host, usado para evitar conflitos de permissões.    |
-    | DEV_UID               | O ID do usuário na máquina host, usado para evitar conflitos de permissões.             |
-    | MYSQL_DATABASE        | Banco de dados padrão.                                                                  |
-    | MYSQL_PASSWORD        | Senha do usuário do MySQL.                                                              |
-    | MYSQL_ROOT_PASSWORD   | Senha do usuário root do MySQL.                                                         |
-    | MYSQL_USER            | Usuário do MySQL.                                                                       |
+    | Variable              | Description                                                           |
+    | --------------------- | --------------------------------------------------------------------- |
+    | COMPOSE_FILE          | The project docker-compose yaml file(s).                              |
+    | COMPOSE_PROJECT_DIR   | The project docker-compose directory for local config.                |
+    | COMPOSE_PROJECT_NAME  | Project name used as prefix when creating containers.                 |
+    | COMPOSER_MEMORY_LIMIT | Prevent memory limit errors as explained [here][memory-limit-errors]. |
+    | DEV_COMPOSER_DIR      | Your local composer directory, on your host machine, used for cache.  |
+    | DEV_DOCKER_IMAGE_PHP  | Docker image used by the php service.                                 |
+    | DEV_HOST_PORT_HTTP    | HTTP port used on the host machine. Default: 80.                      |
+    | DEV_HOST_PORT_MYSQL   | MySQL port used on host machine. Default: 3306.                       |
+    | DEV_GID               | The user group id, used to prevent permissions errors.                |
+    | DEV_UID               | The user id, used to prevent permissions errors.                      |
+    | MYSQL_DATABASE        | Default database.                                                     |
+    | MYSQL_PASSWORD        | MySQL user password.                                                  |
+    | MYSQL_ROOT_PASSWORD   | MySQL root password.                                                  |
+    | MYSQL_USER            | MySQL user.                                                           |
 
-    Para obter o `$GID` e o `$UID` no Linux execute os seguintes comandos:
+    To get the `$GID` and `$UID` run the following commands:
 
     ```
     id -u <user>
@@ -40,8 +40,7 @@
     id -g <group>
     ```
 
-2. Em seguida, você pode executar os scripts auxiliares na pasta
-   `.deploy/local/bin`:
+2. Then you can execute the helper scripts from the `.deploy/local/bin` folder:
 
     ```
     .deploy/local
@@ -60,8 +59,8 @@
 
 ### Docker
 
-1. A partir da **pasta raiz do projeto**, execute os seguintes comandos para
-   criar aliases para as ferramentas de desenvolvimento:
+1. From the **project root folder**, run the following commands to create
+   aliases for the development tools:
 
     ```
     COMPOSE_PROJECT_DIR=${PWD}/.deploy/local
@@ -69,14 +68,14 @@
     . .deploy/local/bin/install-env.sh
     ```
 
-2. Os seguintes aliases serão criados:
+2. The following aliases will be created:
 
     * composer
     * console
     * dc
     * php
 
-1. Construa as imagens do Docker:
+1. Build the docker images:
 
     ```
     docker build -t ${DEV_DOCKER_IMAGE_PHP}:base .deploy/docker/base
@@ -84,30 +83,30 @@
     dc build --parallel
     ```
 
-1. Execute os contêineres:
+1. Run the containers:
 
     ```
     dc up -d
     ```
 
-    _Nota: Verifique se as portas do host configuradas para os serviços no arquivo
-    `docker-compose.yaml` estão livres. A diretiva `ports` mapeia portas na
-    máquina host para portas nos contêineres e segue o formato
-    `<porta-no-host>:<porta-no-container>`.
-    Mais informações na [referência do arquivo do Compose][compose-ports]._
+    _Note: Make sure the host ports set up to the services on the
+    `docker-compose.yaml` file are free. The `ports` directive maps ports on the
+    host machine to ports on the containers and follows the format
+    `<host-port>:<container-port>`. More info on the
+    [Compose file reference][compose-ports]._
 
-1. Para parar os contêineres, execute:
+1. To stop the containers, run:
 
     ```
     dc down
     ```
 
-### Aplicação
+### Application
 
-1. Acesse o diretório raiz, crie um arquivo `.env.local` a partir do arquivo
-   `.env`, e configure as variáveis usadas pela aplicação.
+1. Access the root directory, create an `.env.local` file from `.env`, and set
+   up the variables used on the application.
 
-2. Então, execute o seguinte comando:
+2. Then, run the following command:
 
     ```
     composer install

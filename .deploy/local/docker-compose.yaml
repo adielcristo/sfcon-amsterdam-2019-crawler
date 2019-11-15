@@ -14,7 +14,7 @@ services:
         env_file:
             # docker
             - .env
-            # aplicação
+            # application
             - ../../.env.local
 
     nginx:
@@ -38,7 +38,7 @@ services:
         env_file:
             # docker
             - .env
-            # aplicação
+            # application
             - ../../.env.local
 
     php:
@@ -60,7 +60,7 @@ services:
         env_file:
             # docker
             - .env
-            # aplicação
+            # application
             - ../../.env.local
         user: ${DEV_UID}:${DEV_GID}
 
