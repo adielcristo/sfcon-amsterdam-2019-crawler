@@ -62,7 +62,7 @@ class SymfonyBlogCrawler
 
         if (Response::HTTP_OK === $response->getStatusCode()) {
             $content = $response->getContent();
-            $crawler = new Crawler($content);
+            $crawler = new Crawler($content, 'https://symfony.com');
 
             // Create an object to handle the target DOM elements
             return new BlogPostPage($crawler);
