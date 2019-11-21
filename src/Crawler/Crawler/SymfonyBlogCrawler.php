@@ -47,4 +47,27 @@ class SymfonyBlogCrawler
 
         throw new RuntimeException('Could not retrieve the blog posts.');
     }
+
+    /**
+     * @param string $url
+     * @return BlogPostPage
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
+    public function getBlogPost(string $url) : BlogPostPage
+    {
+        $response = $this->httpClient->request('GET', $url);
+
+        if (Response::HTTP_OK === $response->getStatusCode()) {
+            $content = $response->getContent();
+            $crawler = new Crawler($content);
+
+            // Create an object to handle the target DOM elements
+            return new BlogPostPage($crawler);
+        }
+
+        throw new RuntimeException('Could not retrieve the blog post.');
+    }
 }
