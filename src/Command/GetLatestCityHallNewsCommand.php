@@ -13,7 +13,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class GetLatestCityHallNewsCommand extends Command
 {
-    protected static $defaultName = 'app:news:latest';
+    protected static $defaultName = 'app:city-hall:news:latest';
 
     /**
      * @var CityHallNewsCrawler
