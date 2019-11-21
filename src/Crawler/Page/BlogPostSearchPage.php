@@ -29,4 +29,20 @@ class BlogPostSearchPage
             'div.container div.post__excerpt h2.m-b-5 a'
         )->links();
     }
+
+    /**
+     * @return Link
+     */
+    public function hasNextSearchPageLink() : bool
+    {
+        return count($this->crawler->filter('div.container div.row main.col-sm-9 ul.pager li.text-right a')) > 0;
+    }
+
+    /**
+     * @return Link
+     */
+    public function getNextSearchPageLink() : Link
+    {
+        return $this->crawler->filter('div.container div.row main.col-sm-9 ul.pager li.text-right a')->link();
+    }
 }
